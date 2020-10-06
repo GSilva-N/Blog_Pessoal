@@ -15,50 +15,50 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.generation.blog.model.Postagem;
-import com.generation.blog.repository.PostagemRepository;
+import com.generation.blog.model.Tema;
+import com.generation.blog.repository.TemaRepository;
+
+import io.swagger.models.Response;
 
 @RestController
-@RequestMapping("/postagens")
+@RequestMapping("/tema")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class PostagemController {
+public class TemaController {
 	
-
 	@Autowired
-	private PostagemRepository repository;
+	TemaRepository repository;
 	
 	@GetMapping
-	public ResponseEntity<List<Postagem>> procureTodos(){
+	public ResponseEntity<List<Tema>> getAll(){
 		return ResponseEntity.ok(repository.findAll());
 	}
-
+	
 	@GetMapping("/{id}")
-	public ResponseEntity<Postagem> procurePorId(@PathVariable Long id){
+	public ResponseEntity<Tema> getById(@PathVariable Long id){
 		return repository.findById(id)
 				.map(resp -> ResponseEntity.ok(resp))
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
-	@GetMapping("/titulo/{titulo}")
-	public ResponseEntity<List<Postagem>> procurePorTitulo(@PathVariable String titulo){
-		return ResponseEntity.ok(repository.findAllByTituloContainingIgnoreCase(titulo));
+	@GetMapping("/descricao/{descricao}")
+	public ResponseEntity<List<Tema>> getByDescricao(@PathVariable String descricao){
+		return ResponseEntity.ok(repository.findAllByDescricaoContainingIgnoreCase(descricao));
 	}
 	
 	@PostMapping
-	public ResponseEntity<Postagem> criar(@RequestBody Postagem postagem){
-		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(postagem));
+	public ResponseEntity<Tema> postTema(@RequestBody Tema tema){
+		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(tema));
 	}
 	
-	
-	@PutMapping("/{id}")
-	public ResponseEntity<Postagem> atualizar(@PathVariable Long id, @RequestBody Postagem postagem){
-		postagem.setId(id);
-		return ResponseEntity.status(HttpStatus.OK).body(repository.save(postagem));
+	@PutMapping("/{id_tema}")
+	public ResponseEntity<Tema> putTema(@PathVariable Long id, @RequestBody Tema tema){
+		tema.setId(id);
+		return ResponseEntity.status(HttpStatus.OK).body(repository.save(tema));	
 	}
 	
-	@DeleteMapping("/{id}")
-	public void deletar(@PathVariable Long id) {
+	@DeleteMapping("/{id_tema}")
+	public void deleteById(@PathVariable Long id) {
 		repository.deleteById(id);
 	}
-
+	
 }
