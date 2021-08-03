@@ -50,13 +50,13 @@ public class TemaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(tema));
 	}
 	
-	@PutMapping("/{id_tema}")
+	@PutMapping("/{id}")
 	public ResponseEntity<Tema> putTema(@PathVariable Long id, @RequestBody Tema tema){
 		tema.setId(id);
 		return ResponseEntity.status(HttpStatus.OK).body(repository.save(tema));	
 	}
 	
-	@DeleteMapping("/{id_tema}")
+	@DeleteMapping("/{id}")
 	public void deleteById(@PathVariable Long id) {
 		repository.deleteById(id);
 	}
